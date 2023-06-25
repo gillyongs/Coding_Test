@@ -1,0 +1,75 @@
+
+문제 링크
+https://www.acmicpc.net/problem/2169
+
+블로그 링크
+https://khs20010327.tistory.com/173
+
+구현 코드
+
+#include<iostream>
+
+#define endl "\n"
+#define MAX 1000
+#define R_INF -987654321
+using namespace std;
+
+int N, M, Answer;
+int map[MAX][MAX];
+
+int main(void)
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    cin >> N >> M;
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < M; j++)
+        {
+            cin >> map[i][j];
+        }
+    }
+
+    for (int j = 1; j < M; j++)
+    {
+        map[0][j] += map[0][j - 1];
+    }
+
+    for (int i = 1; i < N; i++)
+    {
+        int ltr[MAX];
+        int rtl[MAX];
+        for (int j = 0; j < M; j++)
+        {
+            ltr[j] = map[i][j];
+            rtl[j] = map[i][j];
+        }
+
+        for (int j = 0; j < M; j++)
+        {
+            if (j == 0) ltr[j] += map[i - 1][j];
+            else { ltr[j] += max(map[i-1][j], ltr[j - 1]); }
+        }
+        for (int j =  M-1; j > -1; j--)
+        {
+            if (j == M-1) rtl[j] += map[i - 1][j];
+            else { 
+                rtl[j] += max(map[i - 1][j], rtl[j + 1]);
+            }
+
+        }
+        for (int j = 0; j < M; j++)
+        {
+            map[i][j] = max(ltr[j], rtl[j]);
+        }
+
+
+
+    }
+    cout << map[N-1][M-1];
+    
+
+
+    return 0;
+}
