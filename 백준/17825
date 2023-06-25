@@ -1,0 +1,193 @@
+
+문제 링크
+https://www.acmicpc.net/problem/17825
+
+블로그
+https://khs20010327.tistory.com/215
+
+작성 코드
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+using namespace std;
+
+int map[1000];
+int id[4];
+int sum = 0;
+int dice[15];
+int nn = 1;
+int maxa = 0;
+vector<int> v;
+vector<int> v2;
+vector<int> va0;
+vector<int> va1;
+vector<int> va2;
+vector<int> va3;
+void dps(int i);
+int main() {
+	{
+		for (int i = 0; i <= 20; i++) {
+			map[i] = i * 2;
+		}
+		map[0] = -1;
+		map[130] = 10;
+		map[131] = 13;
+		map[132] = 16;
+		map[133] = 19;
+		map[134] = 25;
+		map[135] = 30;
+		map[136] = 35;
+		map[137] = 40;
+
+		map[250] = 20;
+		map[251] = 22;
+		map[252] = 24;
+		map[253] = 25;
+		map[254] = 30;
+		map[255] = 35;
+		map[256] = 40;
+
+		map[370] = 30;
+		map[371] = 28;
+		map[372] = 27;
+		map[373] = 26;
+		map[374] = 25;
+		map[375] = 30;
+		map[376] = 35;
+		map[377] = 40;
+
+		map[400] = 25;
+		map[401] = 30;
+		map[402] = 35;
+		map[403] = 40;
+
+	}
+
+	for (int i = 1; i < 11; i++) {
+		cin >> dice[i];
+	}
+	dps(0);
+	cout << maxa;
+	return 0;
+}
+
+
+void dps(int i) {
+	
+	int d = dice[nn];
+	int idd = id[i];
+	id[i] += d;
+	int k = map[id[i]];
+	if (id[i] == 5) { id[i] = 130; }
+	if (id[i] == 10) { id[i] = 250; }
+	if (id[i] == 15) { id[i] = 370; }
+	if (map[id[i]] == 25) { id[i] = 400; }
+	if (map[id[i]] == 30 && id[i]!=370) { id[i] = 401; }
+	if (map[id[i]] == 35) { id[i] = 402; }
+	if (map[id[i]] == 40) { id[i] = 403; }
+	v.push_back(k);
+	v2.push_back(i);
+	va0.push_back(id[0]);
+	va1.push_back(id[1]);
+	va2.push_back(id[2]);
+	va3.push_back(id[3]);
+	sum += k;
+	nn++;
+
+	if(nn==11){
+		if (sum > maxa) {
+			maxa = sum;
+				/*
+				cout << maxa << "\n";
+				for (int i = 0; i < v.size(); i++) {
+					cout << v[i] << " ";
+				}
+				cout << "\n";
+				for (int i = 0; i < v.size(); i++) {
+					cout << v2[i] << " ";
+				}
+				cout << "\n";
+				/
+				for (int i = 0; i < v.size(); i++) {
+						cout << va0[i] << " ";
+					}
+				cout << "\n";
+				for (int i = 0; i < v.size(); i++) {
+					cout << va1[i] << " ";
+				}
+				cout << "\n";
+				for (int i = 0; i < v.size(); i++) {
+					cout << va2[i] << " ";
+				}
+				cout << "\n";
+				for (int i = 0; i < va3.size(); i++) {
+					cout << va3[i] << " ";
+				}
+				cout << "\n";
+				*/
+				
+		
+		}
+	}
+	else {
+		int m[4];
+		int dd = dice[nn];
+		for (int i = 0; i < 4; i++) {
+			m[i] = id[i] + dd;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			if (m[i] == 5) { m[i] = 130; }
+			if (m[i] == 10) { m[i] = 250; }
+			if (m[i] == 15) { m[i] = 370; }
+			if (map[m[i]] == 0) { m[i] = 999; }
+			if (map[m[i]] == 25) { m[i] = 400; }
+			if (map[m[i]] == 30 && m[i] != 370) { m[i] = 401; }
+			if (map[m[i]] == 35) { m[i] = 402; }
+			if (map[m[i]] == 40) { m[i] = 403; }
+		}
+		
+		
+		if ( (map[m[0]]==0) || ( m[0]!=id[1] && m[0]!=id[2] && m[0]!=id[3] ) ) {
+			if (map[id[0]] != 0) {
+				dps(0);
+			}
+		}
+
+		if (id[1] != id[0]){
+			if ((map[m[1]] == 0) || (m[1] != id[0] && m[1] != id[2] && m[1] != id[3])) {
+				if (map[id[1]] != 0) {
+					dps(1);
+				}
+			}
+		}
+
+		if (id[2] != id[1] && id[2] != id[0]) {
+			if ((map[m[2]] == 0) || (m[2] != id[0] && m[2] != id[1] && m[2] != id[3])) {
+				if (map[id[2]] != 0) {
+					dps(2);
+				}
+			}
+		}
+
+		if (id[3] != id[0] && id[3] != id[1] && id[3] != id[2]) {
+			if ((map[m[3]] == 0) || (m[3] != id[0] && m[3] != id[1] && m[3] != id[2])) {
+				if (map[id[3]] != 0) {
+					dps(3);
+				}
+			}
+		}
+	}
+	sum -= k;
+	nn--;
+	id[i] = idd;
+	v.pop_back();
+	v2.pop_back();
+	va1.pop_back();
+	va0.pop_back();
+	va2.pop_back();
+	va3.pop_back();
+
+}
