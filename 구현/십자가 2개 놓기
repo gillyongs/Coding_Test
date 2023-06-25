@@ -1,0 +1,114 @@
+
+문제 링크
+https://www.acmicpc.net/problem/17085
+
+블로그 링크
+https://khs20010327.tistory.com/172
+
+구현 코드
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+int nn;
+int mm;
+int map[20][20];
+
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int N, M;
+    cin >> N >> M;
+    N++;
+    M++;
+    nn = N;
+    mm = M;
+    for (int i = 1; i < N; i++) {
+        for (int j = 1; j < M; j++) {
+            char c;
+            cin >> c;
+            if (c == '#')
+                map[i][j] = 1;
+            else
+                map[i][j] = 0;
+        }
+    }
+    int index = 1;
+    vector < pair<int,pair<int, int>>> v;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < M; j++) {
+            if (map[i][j] == 1) {
+                if(map[i+index][j]==1)
+                    if(map[i-index][j]==1)
+                        if(map[i][j+index]==1)
+                            if (map[i][j - index] == 1) {
+                                v.push_back({ index, {i,j} });
+                                index++;
+                                j--;
+                                
+                                continue;
+                            }
+                v.push_back({index, {i,j}});
+                index = 1;
+
+            }
+        }
+    }
+
+    int answer = 0;
+    int c = 3;
+    for (int i = 0; i < v.size(); i++) {
+        c++;
+        int m[20][20];
+        int x = v[i].second.first;
+        int y = v[i].second.second;
+        int id = v[i].first;
+        int t = 4 * id - 3;
+        m[x][y] = c;
+        for (int k = 1; k < id; k++) {
+               m[x + k][y] = c;
+                m[x - k][y] = c;
+                m[x][y + k] = c;
+                m[x][y - k] = c;
+        }
+        
+        for (int j = i+1; j < v.size(); j++) {
+            int kK = 0;
+            x = v[j].second.first;
+            y = v[j].second.second;
+            id = v[j].first;
+            if (m[x][y] == c) {
+                continue;
+            }
+            for (int k = 1; k < id; k++) {
+                if (m[x + k][y] == c) {
+                    kK = 1;
+                    break;
+                }
+                else if (m[x - k][y] == c) {
+                    kK = 1;
+                    break;
+                }
+                else if (m[x][y + k] == c) {
+                    kK = 1;
+                    break;
+                }
+                else if (m[x][y - k] == c) {
+                    kK = 1;
+                    break;
+                }
+            }
+            if (kK == 0) {
+                int a = t *( 4 * id - 3);
+                //cout << i <<" "<< j <<" " <<a << "\n";
+                if (a > answer)
+                    answer = a;
+            }
+        }
+    }
+
+    cout << answer;
+
+    return 0;
+}
