@@ -1,0 +1,131 @@
+
+문제 링크
+https://www.acmicpc.net/problem/2251
+
+블로그 링크
+https://khs20010327.tistory.com/174
+
+구현 코드
+
+#include<iostream>
+#include<queue>
+#include<vector>
+ #include<algorithm>
+using namespace std;
+
+int main(void){
+    
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    
+    int v[201][201][201];
+    int a, b, c;
+    cin >> a >> b >> c;
+    
+    queue<int> aq;
+    queue<int> bq;
+    queue<int> cq;
+    aq.push(0);
+    bq.push(0);
+    cq.push(c);
+    vector<int> ans;
+    
+    while(!aq.empty()){
+        
+        int aa = aq.front();
+        int bb = bq.front();
+        int cc = cq.front();
+        aq.pop();
+        bq.pop();
+        cq.pop();
+        
+        if(v[aa][bb][cc]==1)
+            continue;
+        if(aa==0)
+            ans.push_back(cc);
+        v[aa][bb][cc]=1;
+        
+        if(aa!=0 && bb!=b){
+            if(aa>b-bb){
+                aq.push(aa+bb-b);
+                bq.push(b);
+                cq.push(cc);
+            }
+            else{
+                aq.push(0);
+                bq.push(aa+bb);
+                cq.push(cc);
+            }
+        }
+        if(aa!=0 && cc!=c){
+            if(aa>c-cc){
+                aq.push(aa+cc-c);
+                bq.push(bb);
+                cq.push(c);
+            }
+            else{
+                aq.push(0);
+                bq.push(bb);
+                cq.push(aa+cc);
+            }
+        }
+        
+        if(bb!=0 && aa!=a){
+            if(bb>a-aa){
+                aq.push(a);
+                bq.push(aa+bb-a);
+                cq.push(cc);
+            }
+            else{
+                aq.push(aa+bb);
+                bq.push(0);
+                cq.push(cc);
+            }
+        }
+        if(bb!=0 && cc!=c){
+            if(bb>c-cc){
+                aq.push(aa);
+                bq.push(bb+cc-c);
+                cq.push(c);
+            }
+            else{
+                aq.push(aa);
+                bq.push(0);
+                cq.push(bb+cc);
+            }
+        }
+        
+        if(cc!=0 && aa!=a){
+            if(cc>a-aa){
+                aq.push(a);
+                bq.push(bb);
+                cq.push(cc+aa-a);
+            }
+            else{
+                aq.push(aa+cc);
+                bq.push(bb);
+                cq.push(0);
+            }
+        }
+        if(cc!=0 && bb!=b){
+            if(cc>b-bb){
+                aq.push(aa);
+                bq.push(b);
+                cq.push(cc+bb-b);
+            }
+            else{
+                aq.push(aa);
+                bq.push(cc+bb);
+                cq.push(0);
+            }
+        }
+        
+    }
+    sort(ans.begin(),ans.end());
+    for(int i=0 ; i<ans.size() ; i++){
+        cout<<ans[i]<<" ";
+    }
+ 
+    return 0;
+}
