@@ -1,0 +1,151 @@
+
+문제 링크
+https://www.acmicpc.net/problem/16506
+
+블로그 링크
+https://khs20010327.tistory.com/205
+
+작성코드
+#define _CRT_SECURE_NO_WARNINGS
+#include <string>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+void func(string);
+void func2(int);
+void func3(char, int);
+int main() {
+	vector<string> vs;
+	/*
+	vector<vector<string>> vvs(4);
+	vs.push_back("MOVC 1 0 5");
+	vs.push_back("MOVC 2 0 10");
+	vs.push_back("ADD 3 1 2");
+	vs.push_back("SUB 4 1 2");
+	*/
+	int N;
+	cin >> N;
+	cin.ignore();
+	vector<vector<string>> vvs(N);
+	for (int i = 0; i < N; i++){
+		string sss;
+		getline(cin, sss);
+		vs.push_back(sss);
+	}
+	string tmp;
+	for (int i = 0; i < vs.size(); i++) {
+		for (int j = 0; j < vs[i].size()+1; j++) {
+			if (vs[i][j] == ' ' || vs[i][j]=='\0') {
+				vvs[i].push_back(tmp);
+				tmp = "";
+			}
+			else
+				tmp.push_back(vs[i][j]);
+		}
+	}
+	for (int i = 0; i < vvs.size(); i++) {
+		string kkk = vvs[i][0];
+		func(kkk);
+		func2(stoi(vvs[i][1]));
+		func2(stoi(vvs[i][2]));
+		char c = vvs[i][0][vvs[i][0].size()-1];
+		func3(c, stoi(vvs[i][3]));
+		cout << '\n';
+	}
+
+}
+
+void func(string s) {
+	if (s == "ADD") {
+		cout << "00000";
+	}
+	else if (s == "ADDC") {
+		cout << "00001";
+	}
+	else if (s == "SUB") {
+		cout << "00010";
+	}
+	else if (s == "SUBC") {
+		cout << "00011";
+	}
+	else if (s == "MOV") {
+		cout << "00100";
+	}
+	else if (s == "MOVC") {
+		cout << "00101";
+	}
+	else if (s == "AND") {
+		cout << "00110";
+	}
+	else if (s == "ANDC") {
+		cout << "00111";
+	}
+	else if (s == "OR") {
+		cout << "01000";
+	}
+	else if (s == "ORC") {
+		cout << "01001";
+	}
+	else if (s == "NOT") {
+		cout << "01010";
+	}
+	else if (s == "MULT") {
+		cout << "01100";
+	}
+	else if (s == "MULTC") {
+		cout << "01101";
+	}
+	else if (s == "LSFTL") {
+		cout << "01110";
+	}
+	else if (s == "LSFTLC") {
+		cout << "01111";
+	}
+	else if (s == "LSFTR") {
+		cout << "10000";
+	}
+	else if (s == "LSFTRC") {
+		cout << "10001";
+	}
+	else if (s == "ASFTR") {
+		cout << "10010";
+	}
+	else if (s == "ASFTRC") {
+		cout << "10011";
+	}
+	else if (s == "RL") {
+		cout << "10100";
+	}
+	else if (s == "RLC") {
+		cout << "10101";
+	}
+	else if (s == "RR") {
+		cout << "10110";
+	}
+	else if (s == "RRC") {
+		cout << "10111";
+	}
+	cout << "0";
+}
+
+void func2(int i) {
+	cout << (i / 4);
+	cout << ((i % 4) / 2);
+	cout << (((i % 4) % 2));
+}
+
+void func3(char c, int i) {
+	if (c != 'C') {
+		func2(i);
+		cout << "0";
+	}
+	else {
+		cout << (i / 8);
+		cout << ((i % 8) / 4);
+		cout << (((i % 8) % 4)/2);
+		cout << (((i % 8) % 4) % 2);
+	}
+}
