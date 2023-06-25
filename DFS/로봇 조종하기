@@ -1,0 +1,58 @@
+문제 링크
+https://www.acmicpc.net/problem/2169
+
+블로그 링크
+https://khs20010327.tistory.com/173
+
+구현 코드
+*DFS로 풀면 시간초과가 되므로 DP로도 풀었다
+
+#include<iostream>
+using namespace std;
+
+int N, M;
+int map[1005][1005];
+int check[1005][1005];
+void dfs(int x, int y);
+int dx[3] = { 1,-1,0 };
+int dy[3] = { 0,0,1 };
+int maxa = -1;
+int sum = 0;
+int main(void) {
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+    cin >> N >> M;
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= M; j++) {
+            cin >> map[i][j];
+        }
+    }
+    check[1][1] = 1;
+    sum += map[1][1];
+    dfs(1, 1);
+    cout << maxa;
+    return 0;
+}
+
+void dfs(int x, int y) {
+    if (x == M && y == M) {
+        if (sum > maxa)
+            maxa = sum;
+        return;
+    }
+    for (int i = 0; i < 3; i++) {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+        if (nx > 0 && ny > 0 && nx <= M && ny <= N) {
+            if (check[ny][nx] != 1) {
+                check[ny][nx] = 1;
+                sum += map[ny][nx];
+                dfs(nx,ny);
+                sum -= map[ny][nx];
+                check[ny][nx] = 0;
+            }
+        }
+    }
+
+}
