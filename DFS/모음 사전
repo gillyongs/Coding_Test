@@ -1,0 +1,37 @@
+
+문제 링크
+https://school.programmers.co.kr/learn/courses/30/lessons/84512
+
+블로그 링크
+https://khs20010327.tistory.com/157
+
+구현 코드
+
+#include <string>
+#include <vector>
+#include <iostream>
+using namespace std;
+int answer = 0;
+int counts = -1;
+string words;
+string k = "";
+void dps(string a);
+int solution(string word) {
+    words = word;
+    dps(k);
+    return answer;
+}
+void dps(string a){
+    counts ++;
+    if(a == words){ answer = counts; return;}
+    if(a != words && a.size() == 5){
+        a.pop_back();
+        return;
+    }
+    dps(a+"A");
+    dps(a+"E");
+    dps(a+"I");
+    dps(a+"O");
+    dps(a+"U");
+    a.pop_back();
+}
