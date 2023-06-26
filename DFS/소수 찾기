@@ -1,0 +1,71 @@
+
+문제 링크
+https://school.programmers.co.kr/learn/courses/30/lessons/42839
+
+블로그 링크
+https://khs20010327.tistory.com/155
+
+구현 코드
+
+#include <string>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+int N;
+int* c;
+int k;
+int* n;
+int t;
+vector<int> a;
+void dfs(int i);
+int solution(string numbers) {
+    int answer = 0;
+    N = numbers.size();
+    int check[N];
+    c = check;
+    int nk[N];
+    for(int i=0 ; i<N ; i++)
+        nk[i]=numbers[i]-48;
+    n = nk;
+    for(int i=0 ; i<N ; i++){
+        for(int i=0 ; i<N ; i++)
+            c[i]=0;
+        k=0;
+        t=1;
+        dfs(i);
+    }
+    for(int u=0 ; u<a.size() ; u++){
+        //cout<<a[u]<<" ";
+        int zz=0;
+        for(int z=2 ; z<a[u]/2+1 ; z++)
+            if(a[u]%z==0)
+                zz=1;
+        if(zz==0)
+            answer++;
+    }
+    return answer;
+}
+
+void dfs(int i){
+    c[i]=1;
+    k+=n[i]*t;
+    //cout<<k<<"\n";
+    int z=0;
+    for(int u=0 ; u<a.size() ; u++)
+        if(a[u]==k)
+            z=1;
+    if(z==0 && k!= 0 && k!=1)
+        a.push_back(k);
+    
+    t*=10;
+    for(int k=0 ; k<N ; k++){
+        if(c[k]!=1){
+            dfs(k);
+        }
+    }
+    t/=10;
+    k-=n[i]*t;
+    c[i]=0;
+    
+}
