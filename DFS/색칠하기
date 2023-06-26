@@ -1,0 +1,73 @@
+
+문제 링크
+https://www.acmicpc.net/problem/13265
+
+블로그 링크
+https://khs20010327.tistory.com/217
+
+구현 코드
+
+#include <iostream>
+#include <vector>
+using namespace std;
+vector<vector<int>> line;
+int* c;
+int ans=0;
+void dfs(int i){
+    for(int k=0 ; k<line[i].size() ; k++){
+        if(ans==1) return;
+        int z = line[i][k];
+        if(c[i]==1 && c[z]==1) ans=1;
+        if(c[i]==2 && c[z]==2) ans=1;
+        if(ans==1) return;
+        if(c[z]==0){
+            if(c[i]==1)
+                c[z]=2;
+            else if (c[i]==2)
+                c[z]=1;
+            dfs(z);
+            if(ans==1) return;
+        }
+            
+    }
+}
+
+int main(){
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    int N;
+    cin >> N;
+    while(N--){
+        int A,B;
+        cin >> A >> B;
+        int check[A+1];
+        for(int i=1 ; i<A+1 ; i++)
+            check[i]=0;
+        c = check;
+        line = vector<vector<int>>(A+1);
+        while(B--){
+            int a, b;
+            cin >> a >> b;
+            line[a].push_back(b);
+            line[b].push_back(a);
+        }
+        ans=0;
+        for(int i=1 ; i<A+1 ; i++){
+            if(ans==0 && c[i]==0){
+                c[i]=1;
+                dfs(i);
+            }
+            
+        }
+        
+        
+        if(ans==1)
+            cout<<"impossible\n";
+        else
+            cout<<"possible\n";
+        
+    }
+    return 0;
+    
+    
+}
