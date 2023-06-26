@@ -1,0 +1,140 @@
+
+문제 링크
+https://www.acmicpc.net/problem/2064
+
+블로그 링크
+https://khs20010327.tistory.com/218
+
+구현 코드
+
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <string>
+#include <sstream>
+using namespace std;
+
+
+vector<string> split(string input, char dlim) {
+	vector<string> result;
+	stringstream ss;
+	string stringBuffer;
+	ss.str(input);
+	while (getline(ss, stringBuffer, dlim)) {
+		result.push_back(stringBuffer);
+	}
+
+	return result;
+}
+int main() {
+
+	int nn;
+	cin >> nn;
+	vector<string> s(nn);
+	for (int i = 0; i < nn; i++) {
+		cin >> s[i];
+	}
+	vector<vector<int>>v(nn);
+	for (int i = 0; i < s.size(); i++) {
+		vector<string> result = split(s[i], '.');
+		for (int j = 0; j < result.size(); j++) {
+			int t = stoi(result[j]);
+			v[i].push_back(t);
+		}
+	}
+	
+	if (v.size() == 1){
+		cout << s[0]<<"\n"<<"255.255.255.255";
+		return 0;
+	}
+	
+
+	sort(v.begin(), v.end());
+	int vv = v.size() - 1;
+	int a[32];
+	int b[32];
+	for (int i = 0; i < 4; i++) {
+		int aa = 128;
+		int bb = 128;
+		for (int j = 0; j < 8; j++) {
+			if (v[0][i] >= aa) {
+				a[j + i * 8] = 1;
+				v[0][i] -= aa;
+			}
+			else {
+				a[j + i * 8] = 0;
+			}
+			aa /= 2;
+			if (v[vv][i] >= bb) {
+				b[j + i * 8] = 1;
+				v[vv][i] -= bb;
+			}
+			else {
+				b[j + i * 8] = 0;
+			}
+			bb /= 2;
+		}
+	}
+	int index=32;
+	for (int i = 0; i < 32; i++) {
+		if (a[i] != b[i]) {
+			index = i;
+			break;
+		}
+	}
+	int m[32];
+	for (int i = index; i < 32; i++) {
+		m[i] = 0;
+	}
+	for (int i = 0; i < index; i++) {
+		m[i] = 1;
+	}
+	
+
+	int n[32];
+	for (int i = 0; i < 32; i++) {
+		if (m[i] == 1) {
+			n[i] = a[i];
+		}
+		else {
+			n[i] = 0;
+		}
+	}
+
+	int mt[4];
+	int nt[4];
+	for (int i = 0; i < 4; i++) {
+		int k = 0;
+		int kk = 0;
+		int t = 128;
+		for (int j = 0; j < 8; j++) {
+			if (m[j + i * 8] == 1) {
+				k += t;
+			}
+			if (n[j + i * 8] == 1) {
+				kk += t;
+			}
+			t /= 2;
+		}
+		mt[i] = k;
+		nt[i] = kk;
+
+	}
+	for (int i = 0; i < 4; i++) {
+		cout << nt[i];
+		if (i != 3)
+			cout << ".";
+	}
+	cout << "\n";
+	for (int i = 0; i < 4; i++) {
+		cout << mt[i];
+		if (i != 3)
+			cout << ".";
+	}
+
+	return 0;
+}
+
+
+
+
