@@ -1,0 +1,71 @@
+
+문제링크
+https://school.programmers.co.kr/learn/courses/30/lessons/17685
+
+블로그 링크
+https://khs20010327.tistory.com/150
+
+구현 코드
+
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+using namespace std;
+
+int solution(vector<string> words) {
+    int answer = 0;
+    sort(words.begin(), words.end());
+    int N = words.size();
+    
+    answer ++;
+    for(int i=0 ; i<words[0].size() ; i++){
+        if(words[0][i]==words[1][i])
+            answer++;
+        else 
+            break;
+    }
+    
+    
+    if(words[1].find(words[0]) != string::npos)
+        answer --;
+    //cout<<answer<<" ";
+    
+    for(int i=1 ; i<N-1 ; i++){
+        answer ++;
+        for(int j=0 ; j<words[i].size() ; j++){
+            if(words[i][j]==words[i+1][j])
+                answer ++;
+            else 
+                break;
+        }
+        for(int j=0 ; j<words[i].size() ; j++){
+            if(words[i][j]==words[i-1][j])
+                answer ++;
+            else 
+                break;
+        }
+        for(int j=0 ; j<words[i].size() ; j++){
+            if(words[i][j]==words[i-1][j] && words[i][j]==words[i+1][j])
+                answer --;
+            else 
+                break;
+        }
+        if(words[i+1].find(words[i]) != std::string::npos)
+            answer --;
+        //cout<<answer<<" ";
+    }
+    
+    
+    
+    answer ++;
+     for(int i=0 ; i<words[N-1].size() ; i++){
+        if(words[N-1][i]==words[N-2][i])
+            answer++;
+         else 
+            break;
+    }
+    //cout<<answer<<" ";
+    
+    return answer;
+}
