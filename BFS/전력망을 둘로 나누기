@@ -1,0 +1,56 @@
+
+문제 링크
+https://school.programmers.co.kr/learn/courses/30/lessons/86971
+
+블로그 링크
+https://khs20010327.tistory.com/156
+
+구현 코드
+#include <string>
+#include <vector>
+#include <queue>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+vector<vector<int>> w;
+int visit[101];
+int counts=0;
+int solution(int n, vector<vector<int>> wires) {
+    int answer = 999;
+    for(int t=0 ; t<wires.size() ; t++){
+        w=wires;
+        w[t]={0,0};
+        queue<int> q;
+        q.push(1);
+        counts=0;
+        for(int tt=0 ; tt<101 ; tt++)
+            visit[tt]=0;
+        visit[1]=1;
+        while(!q.empty()){
+            counts++;
+            int start = q.front();
+            cout<<start<<" ";
+            q.pop();
+            for(int i=0 ; i<wires.size() ; i++){
+                int w0 = w[i][0];
+                int w1 = w[i][1];
+                if(w0==start && visit[w1]!=1){
+                    q.push(w1);
+                    visit[w1]=1;
+                }
+                if(w1==start && visit[w0]!=1){
+                    q.push(w0);
+                    visit[w0]=1;
+                }   
+            }
+        }
+        int a = n-counts;
+        int b = max(counts, n-counts);
+        int c = min(counts, n-counts);
+        int d = b-c;
+        if(d<answer)
+            answer = d;
+    cout<<"->"<<counts<<" answer="<<answer<<"\n";
+    }
+    return answer;
+}
