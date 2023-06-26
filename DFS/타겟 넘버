@@ -1,0 +1,44 @@
+
+문제 링크
+https://school.programmers.co.kr/learn/courses/30/lessons/43165
+
+블로그 링크
+https://khs20010327.tistory.com/154
+
+구현 코드
+
+#include <string>
+#include <vector>
+
+using namespace std;
+int answer = 0;
+int k;
+int t;
+void dfs1(int res, int index, vector<int> numbers);
+void dfs2(int res, int index, vector<int> numbers );
+int solution(vector<int> numbers, int target) {
+    k = numbers.size()-1;
+    t = target;
+    dfs1(0, 0, numbers);
+    dfs2(0, 0, numbers);
+    return answer;
+}
+
+void dfs1(int res, int index, vector<int> numbers){
+    res += numbers[index];
+    if(index==k && res ==t)
+        answer+=1;
+    if(index<k){
+        dfs1(res, index+1, numbers);
+        dfs2(res, index+1, numbers);
+    }
+}
+void dfs2(int res, int index, vector<int> numbers ){
+    res -= numbers[index];
+    if(index==k && res ==t)
+        answer+=1;
+    if(index<k){
+        dfs1(res, index+1, numbers);
+        dfs2(res, index+1, numbers);
+    }
+}
