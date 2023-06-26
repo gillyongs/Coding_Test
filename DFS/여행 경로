@@ -1,0 +1,61 @@
+
+문제 링크
+https://school.programmers.co.kr/learn/courses/30/lessons/43164
+
+블로그 링크
+https://khs20010327.tistory.com/153
+
+구현 코드
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+using namespace std;
+vector<string> answer;
+vector<vector<string>> t;
+void dfs(string str);
+int* c;
+int N;
+
+vector<string> solution(vector<vector<string>> tickets) {
+    t = tickets;
+    N = tickets.size();
+    int check[N];
+    c = check;
+    answer.push_back("ICN");
+    dfs("ICN");
+    return answer;
+}
+
+void dfs(string str){
+    cout<<str<<": ";
+    vector<pair<string,int>> a;
+    for(int i=0 ; i<N ; i++){
+        if(t[i][0]==str&& c[i]!=1){
+            a.push_back({t[i][1],i});
+           
+        }
+    }
+    if(a.size()>0){
+        sort(a.begin(), a.end());
+        for(int i=0 ; i<a.size() ; i++){
+            cout<<a[i].first<<" ";
+        }
+        cout<<"\n";
+        for(int i=0 ; i<a.size() ; i++){
+            
+            string s = a[i].first;
+            int idx = a[i].second;
+            c[idx]=1;
+            answer.push_back(s);
+            if(answer.size()==N+1)
+                return;
+            dfs(s);
+            if(answer.size()==N+1)
+                return;
+            answer.pop_back();
+            c[idx]=0;
+        }
+    }
+}
