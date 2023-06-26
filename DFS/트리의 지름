@@ -1,0 +1,78 @@
+
+문제 링크
+https://www.acmicpc.net/problem/1167
+
+블로그 링크
+https://khs20010327.tistory.com/149
+
+구현 코드
+
+#include <vector>
+#include <iostream>
+using namespace std;
+
+void dfs(int i);
+int visit[100001];
+int answer = -1;
+int counts =  0;
+int maxa;
+vector<vector<pair<int, int>>> v;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    int N;
+    cin >> N;
+    v = vector<vector<pair<int,int>>>(N+1);
+    while (N--) {
+        int n;
+        cin >> n;
+        int a, b;
+        while (1) {
+            cin >> a;
+            if (a == -1) break;
+            cin >> b;
+            if (a > n) {
+                v[n].push_back({ a,b });
+                v[a].push_back({ n,b });
+            }
+        }
+    }
+    int start = 1;
+    visit[start] = 1;
+    dfs(start);
+    while(1) {
+        counts = 0;
+        for (int j = 0; j < 100000; j++)
+            visit[j] = 0;
+        visit[maxa] = 1;
+        dfs(maxa);
+        if (maxa == start) {
+            cout << answer;
+            return 0;
+        }
+        start = maxa;
+    }
+    return 0;
+}
+
+void dfs(int i) {
+    for (int k = 0; k < v[i].size(); k++) {
+        int node = v[i][k].first;
+        int gap = v[i][k].second;
+        if (visit[node] != 1) {
+            visit[node] = 1;
+            counts += gap;
+            if (counts > answer) {
+                maxa = node;
+                answer = counts;
+            }
+            dfs(node);
+            counts -= gap;
+            visit[node] = 0;
+        }
+        
+    }
+    
+}
