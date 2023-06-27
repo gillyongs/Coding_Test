@@ -1,0 +1,82 @@
+
+문제 링크
+https://www.acmicpc.net/problem/2064
+
+블로그 링크
+https://khs20010327.tistory.com/220
+
+구현 코드
+
+#include <iostream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <bitset>
+#include <cmath>
+using namespace std;
+vector<int> inputIp;
+void print(int num) {
+    int shift = 24;
+    for (int i = 0; i < 4; i++, shift -= 8) {
+        cout << ((num >> shift) & (1 << 8) - 1);  
+        if (i != 3) cout << '.';
+    }
+    cout << "\n";
+}
+int main() {
+    cin.tie(NULL); 
+    cout.tie(NULL); 
+    ios_base::sync_with_stdio(false);
+
+    int n; 
+    cin >> n;
+    string ip;
+    int mina;
+    int maxa;
+    for (int i = 0; i < n; i++) {
+        cin >> ip;
+        istringstream ss(ip);
+        string tmp;
+        int k = 0;
+        while (getline(ss, tmp, '.')) {
+            k <<= 8;
+            k |= stoi(tmp);    //or 연산
+        }
+        if (i == 0) {
+            mina = k;
+            maxa = k;
+        }
+        else {
+            if (k < mina)
+                mina = k;
+            if (k > maxa)
+                maxa = k;
+        }
+    }
+
+
+    int subnet = 0; 
+    bool isContinue = true;
+    for (int i = 31; i >= 0; i--) {
+        if (!isContinue) break;
+        int bit = 1 << i;  
+
+        if ((mina & bit) != (maxa & bit)) {
+            isContinue = false;         
+        }
+
+        if (isContinue){
+            subnet |= bit;         
+        }
+    }
+
+    print(subnet & mina);
+    print(subnet);
+
+
+
+
+
+    return 0;
+}
